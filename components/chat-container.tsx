@@ -147,6 +147,7 @@ function ChatContainer() {
       setMessages((prevMessages) => [...prevMessages, newMessage]);
     } catch (error) {
       toast.error("Failed to send message");
+      console.log(error)
       // Optionally remove the user message if sending fails or handle the error as needed
     } finally {
       // Clear the message and images state, regardless of whether the send was successful
