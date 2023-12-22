@@ -78,10 +78,6 @@ function ChatContainer() {
     setImages(images.filter((_, i) => i !== index));
   };
 
-  const handleMessageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setMessage(e.target.value);
-  };
-
   const sendMessage = async () => {
     setIsSending(true); // Disable send and upload buttons
 

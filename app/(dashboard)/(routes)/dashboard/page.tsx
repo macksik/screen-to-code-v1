@@ -21,7 +21,7 @@ import { UserAvatar } from "@/components/user-avatar";
 import { Empty } from "@/components/ui/empty";
 import { useProModal } from "@/hooks/use-pro-modal";
 
-import { formSchema } from "../code/constants";
+import { formSchema } from "./constants";
 import ChatContainer from "@/components/chat-container";
 
 const CodePage = () => {
