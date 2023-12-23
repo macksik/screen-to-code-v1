@@ -62,7 +62,9 @@ export async function POST(request: Request) {
   const payload = {
     model: "gpt-4-vision-preview",
     messages: clonedMessages,
-    max_tokens: 4096,
+    temperature: 0,
+    seed: 0,
+    max_tokens: 4048,
   };
 
   const headers = {
