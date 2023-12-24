@@ -28,7 +28,7 @@ const chatRequestSchema = z.object({
 const OPENAI_URL = "https://api.openai.com/v1/chat/completions" as const;
 
 const axiosInstance = axios.create({
-  timeout: 1000 * 60,
+  timeout: 60000,
   baseURL: OPENAI_URL,
   headers: {
     "Content-Type": "application/json",
