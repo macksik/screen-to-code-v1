@@ -28,7 +28,6 @@ const chatRequestSchema = z.object({
 const OPENAI_URL = "https://api.openai.com/v1/chat/completions" as const;
 
 const axiosInstance = axios.create({
-  timeout: 60000,
   baseURL: OPENAI_URL,
   headers: {
     "Content-Type": "application/json",
@@ -65,7 +64,7 @@ export async function POST(request: Request) {
       messages: clonedMessages,
       temperature: 0,
       seed: 0,
-      max_tokens: 4048,
+      max_tokens: 4000
     };
 
     const response = await axiosInstance.post("", payload);
@@ -73,7 +72,14 @@ export async function POST(request: Request) {
     const firstMessage = response.data.choices[0].message;
     return NextResponse.json({ success: true, message: firstMessage });
   } catch (error) {
-    console.error("Error:", error);
-    return NextResponse.json({ success: false, message: null }, { status: 500 });
+    if (error.isAxiosError && error.response) {
+      // Handle AxiosError with response
+      console.error("AxiosError:", error.response.data);
+      return NextResponse.json({ success: false, message: error.response.data }, { status: error.response.status });
+    } else {
+      // Handle other errors
+      console.error("Error:", error);
+      return NextResponse.json({ success: false, message: error.message }, { status: 500 });
+    }
   }
 }

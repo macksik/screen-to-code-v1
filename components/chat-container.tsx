@@ -10,6 +10,7 @@ import {
 import ReactMarkdown from "react-markdown";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { Button } from "./ui/button";
 
 const TAILWIND_DEV = `
   You are an expert Tailwind developer
@@ -61,6 +62,7 @@ function ChatContainer() {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
   const [isSending, setIsSending] = useState(false);
+  const [viewMode, setViewMode] = useState('code')
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -164,10 +166,10 @@ function ChatContainer() {
             }`}
           >
             <div
-              className={`rounded-lg p-2 max-w-full lg:max-w-full ${
+              className={`rounded-lg p-2  ${
                 message.role === "user"
-                  ? "bg-purple-500 text-white"
-                  : "bg-pink-500 text-white"
+                  ? "bg-white text-black"
+                  : "bg-white text-black"
               }`}
             >
               {/* Ensure that content is an array before mapping */}
@@ -187,19 +189,35 @@ function ChatContainer() {
                   }
                 })
               ) : (
-                // If message.content is not an array, render it as a string
-                <ReactMarkdown components={{
-                  pre: ({ node, ...props }) => (
-                    <div className="overflow-auto w-full my-2 bg-black/10 p-2 rounded-lg">
-                      <pre {...props} />
+                // Якщо message.content не є масивом, відображаємо його як рядок
+                <>
+                  <div className="flex space-x-4">
+                    <Button onClick={() => setViewMode('code')}>Code</Button>
+                    <Button onClick={() => setViewMode('preview')}>Preview</Button>
+                    <Button onClick={() => {
+                      navigator.clipboard.writeText(message.content.replace(/^```html|```$/g, ''));
+                      toast.success('Copied to clipboard');
+                    }}>Copy Code</Button>
+                  </div>
+                  {viewMode === 'code' ? (
+                    <ReactMarkdown components={{
+                      pre: ({ node, ...props }) => (
+                        <div className="overflow-auto w-full my-2 bg-black/10 p-2 rounded-lg">
+                          <pre {...props} />
+                        </div>
+                      ),
+                      code: ({ node, ...props }) => (
+                        <code className="bg-black/10 rounded-lg p-1" {...props} />
+                      )
+                    }} className="text-sm overflow-hidden leading-7">
+                      {message.content || ""}
+                    </ReactMarkdown>
+                  ) : (
+                    <div className="my-4 border-[4px] border-black rounded-[20px] shadow-lg transform scale-[0.9] origin-top w-full h-[500px]">
+                      <div dangerouslySetInnerHTML={{ __html: message.content.replace(/^```html|```$/g, '') }} ></div>
                     </div>
-                  ),
-                  code: ({ node, ...props }) => (
-                    <code className="bg-black/10 rounded-lg p-1" {...props} />
-                  )
-                }} className="text-sm overflow-hidden leading-7">
-                  {message.content || ""}
-                </ReactMarkdown>
+                  )}
+                </>
               )}
             </div>
           </div>
