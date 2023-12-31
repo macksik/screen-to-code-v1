@@ -166,7 +166,7 @@ function ChatContainer() {
             }`}
           >
             <div
-              className={`rounded-lg p-2  ${
+              className={`rounded-lg p-2 w-full  ${
                 message.role === "user"
                   ? "bg-white text-black"
                   : ""
@@ -216,9 +216,7 @@ function ChatContainer() {
                       {message.content || ""}
                     </ReactMarkdown>
                   ) : (
-                    <div className="my-4 border-[4px] border-black rounded-[20px] shadow-lg transform scale-[0.9] origin-top w-full h-[500px]">
-                      <div dangerouslySetInnerHTML={{ __html: (message.content as string).replace(/^```html|```$/g, '') }} ></div>
-                    </div>
+                    <iframe srcDoc={(message.content as string).replace(/^```html|```$/g, '')} className="w-full h-[832px] overflow-auto my-2 bg-black/10 p-2 rounded-lg"></iframe>
                   )}
                 </>
               )}
