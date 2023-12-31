@@ -72,14 +72,7 @@ export async function POST(request: Request) {
     const firstMessage = response.data.choices[0].message;
     return NextResponse.json({ success: true, message: firstMessage });
   } catch (error) {
-    if (error.isAxiosError && error.response) {
-      // Handle AxiosError with response
-      console.error("AxiosError:", error.response.data);
-      return NextResponse.json({ success: false, message: error.response.data }, { status: error.response.status });
-    } else {
-      // Handle other errors
-      console.error("Error:", error);
-      return NextResponse.json({ success: false, message: error.message }, { status: 500 });
-    }
+    console.log(error)
+    return NextResponse.json({ success: false, message: null });
   }
 }
