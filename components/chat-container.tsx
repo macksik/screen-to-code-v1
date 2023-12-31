@@ -195,8 +195,11 @@ function ChatContainer() {
                     <Button onClick={() => setViewMode('code')}>Code</Button>
                     <Button onClick={() => setViewMode('preview')}>Preview</Button>
                     <Button onClick={() => {
-                      navigator.clipboard.writeText(message.content.replace(/^```html|```$/g, ''));
-                      toast.success('Copied to clipboard');
+                      if (typeof message.content === 'string') {
+                        const replacedText = (message.content as string).replace(/^```html|```$/g, '');
+                        navigator.clipboard.writeText(replacedText);
+                        toast.success('Copied to clipboard');
+                      }
                     }}>Copy Code</Button>
                   </div>
                   {viewMode === 'code' ? (
@@ -214,7 +217,7 @@ function ChatContainer() {
                     </ReactMarkdown>
                   ) : (
                     <div className="my-4 border-[4px] border-black rounded-[20px] shadow-lg transform scale-[0.9] origin-top w-full h-[500px]">
-                      <div dangerouslySetInnerHTML={{ __html: message.content.replace(/^```html|```$/g, '') }} ></div>
+                      <div dangerouslySetInnerHTML={{ __html: (message.content as string).replace(/^```html|```$/g, '') }} ></div>
                     </div>
                   )}
                 </>
