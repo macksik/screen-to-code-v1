@@ -2,6 +2,8 @@ import axios from "axios";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
+export const maxDuration = 30;
+
 const textContentSchema = z.object({
   type: z.literal("text"),
   text: z.string(),

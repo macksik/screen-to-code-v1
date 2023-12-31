@@ -169,7 +169,7 @@ function ChatContainer() {
               className={`rounded-lg p-2  ${
                 message.role === "user"
                   ? "bg-white text-black"
-                  : "bg-white text-black"
+                  : ""
               }`}
             >
               {/* Ensure that content is an array before mapping */}
